@@ -96,20 +96,23 @@ button.onclick = function () {
     xhrRequest.send()
 }
 
-//to be completed by student
+//Implementation of Backtracking Algorithm:
+
+//Util Function for solve
 function isPossible(board, sr, sc, val) {
+   //In row the val should not get repeated
     for (var row = 0; row < 9; row++) {
         if (board[row][sc] == val) {
             return false;
         }
     }
-
+//In column also the val should not get repeated
     for (var col = 0; col < 9; col++) {
         if (board[sr][col] == val) {
             return false;
         }
     }
-
+//This is for the sub matrix of size 3*3
     var r = sr - sr % 3;
     var c = sc - sc % 3;
 
@@ -120,26 +123,30 @@ function isPossible(board, sr, sc, val) {
             }
         }
     }
+    //If all the above condition satisfy then return true
     return true;
 
 }
 
-//to be completed by student
+//Backtracking algorithm
 function solveSudokuHelper(board, sr, sc) {
+    //We try to fill the sudoku row by row 
+    //if current row=9 which means work is done
     if (sr == 9) {
         changeBoard(board);
         return;
     }
+    //If current col=9 then shift to next row 1st col (0th col)
     if (sc == 9) {
         solveSudokuHelper(board, sr + 1, 0)
         return;
     }
-
+//if cell is already filled with non zero values then move to next cell
     if (board[sr][sc] != 0) {
         solveSudokuHelper(board, sr, sc + 1);
         return;
     }
-
+//Try to fill each value and check for next is it possible to fill out the whole sudoku
     for (var i = 1; i <= 9; i++) {
         if (isPossible(board, sr, sc, i)) {
             board[sr][sc] = i;
